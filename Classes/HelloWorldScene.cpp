@@ -82,23 +82,36 @@ bool HelloWorld::init()
 
 	
 	// add ship player
-	auto ship = Sprite::create("charactor/space-shuttle.png");
-	if (ship == nullptr)
+	this->ship = Sprite::create("charactor/space-shuttle.png");
+	if (this->ship == nullptr)
 	{
 		problemLoading("'charactor/space-shuttle.png'");
 	}
 	else
 	{
 		// position the sprite on the center of the screen
-		ship->setPosition(Vec2(visibleSize.width / 2 + origin.x, origin.y + 10));
-		ship->setScale(0.17);
+		this->ship->setPosition(Vec2(visibleSize.width / 2 + origin.x, origin.y + 10));
+		this->ship->setScale(0.17f);
 
 		// add the sprite as a child to this layer
-		this->addChild(ship, 0);
+		this->addChild(this->ship, 0);
 	}
 
+	onRegisterTouchEvent();
 
     return true;
+}
+
+void HelloWorld::onRegisterTouchEvent()
+{
+	auto touchListener = EventListenerTouchOneByOne::create();
+
+	touchListener->onTouchBegan = CC_CALLBACK_2(HelloWorld::onTouchBegan, this);
+	touchListener->onTouchEnded = CC_CALLBACK_2(HelloWorld::onTouchEnded, this);
+	touchListener->onTouchMoved = CC_CALLBACK_2(HelloWorld::onTouchMoved, this);
+	touchListener->onTouchCancelled = CC_CALLBACK_2(HelloWorld::onTouchCancelled, this);
+
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
 }
 
 
@@ -114,3 +127,40 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 
 
 }
+
+bool HelloWorld::onTouchBegan(Touch* touch, Event* event)
+{
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+	Vec2 pos = touch->getLocation();
+
+	if (pos.x < origin.x + visibleSize.width / 2)
+	{
+		// Move Left action
+		this->ship->setPosition(Vec2(origin.x, 10));
+	}
+	else
+	{
+		// Move Right action		
+		this->ship->setPosition(Vec2(origin.x + visibleSize.width, 10));
+	}
+
+
+	return true;
+}
+
+void HelloWorld::onTouchEnded(Touch* touch, Event* event)
+{
+}
+
+void HelloWorld::onTouchMoved(Touch* touch, Event* event)
+{
+	
+}
+
+void HelloWorld::onTouchCancelled(Touch* touch, Event* event)
+{
+	
+}
+
