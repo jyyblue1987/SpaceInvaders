@@ -29,7 +29,7 @@
 
 class HelloWorld : public cocos2d::Scene
 {
-	cocos2d::CCNode* ship;
+	cocos2d::Sprite* ship;
 	void onRegisterTouchEvent();
 
 public:

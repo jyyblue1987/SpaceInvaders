@@ -135,17 +135,32 @@ bool HelloWorld::onTouchBegan(Touch* touch, Event* event)
 
 	Vec2 pos = touch->getLocation();
 
+	auto ship_size = this->ship->getContentSize();
+
+	float bound_left = origin.x + 10 + ship_size.width / 2;
+	float bound_right = origin.x + visibleSize.width - (10 + ship_size.width / 2);
+
+	float gap = 10;
+
+	Vec2 cur_pos = this->ship->getPosition();
 	if (pos.x < origin.x + visibleSize.width / 2)
 	{
 		// Move Left action
-		this->ship->setPosition(Vec2(origin.x, 10));
+		cur_pos.x -= gap;
+		if (cur_pos.x <= bound_left)
+			cur_pos.x = bound_left;
+
+		this->ship->setPosition(cur_pos);
 	}
 	else
 	{
 		// Move Right action		
-		this->ship->setPosition(Vec2(origin.x + visibleSize.width, 10));
+		cur_pos.x += gap;
+		if (cur_pos.x >= bound_right)
+			cur_pos.x = bound_right;
 	}
 
+	this->ship->setPosition(cur_pos);
 
 	return true;
 }
