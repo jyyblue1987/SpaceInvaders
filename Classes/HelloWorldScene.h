@@ -30,12 +30,18 @@
 class HelloWorld : public cocos2d::Scene
 {
 	cocos2d::Sprite* ship;
+	int		m_nMoveFlag = 0;	// 0: non touch, 1: left, 2: right
+
 	void onRegisterTouchEvent();
+void	moveShip(float dt);
 
 public:
     static cocos2d::Scene* createScene();
 
     virtual bool init();
+
+	void update(float dt) override;
+
 
 	virtual bool onTouchBegan(cocos2d::Touch*, cocos2d::Event*);
 	virtual void onTouchEnded(cocos2d::Touch*, cocos2d::Event*);
